@@ -13,6 +13,9 @@ if a task in not completed, a nurse can re assign it to the next shift
 .. if given the chance i would love to explain more on my solutions
 or perhaps get more time to ace it .
 
+As for UI, i have all elements in place, would have use the material design pattern well enough
+but am time concerned 
+
 I planned to write some unit and integration test, 24 hrs is a lot but quite short to think
 things through
 

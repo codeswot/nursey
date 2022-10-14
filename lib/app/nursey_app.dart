@@ -48,6 +48,7 @@ class NurseyApp extends StatelessWidget {
           theme: ThemeData(
               // AppColors.primaryAccent,
               scaffoldBackgroundColor: AppColors.primaryBg,
+              primarySwatch: Colors.purple,
               appBarTheme: const AppBarTheme(
                   backgroundColor: AppColors.primaryAccent, elevation: 1)),
           home: const SignInScreen(),
