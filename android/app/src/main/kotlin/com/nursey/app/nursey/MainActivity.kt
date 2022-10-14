@@ -1,0 +1,6 @@
+package com.nursey.app.nursey
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
