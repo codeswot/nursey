@@ -4,8 +4,8 @@ Flutter Assignment for Dexter-health
 
 ## Getting Started
 
-1. I would have implemented a midleware that checks the current time, and checks the Nurses on duty
-and send a push notifications for pending task, esspecialy task left from last shift (hence in the DB i added start time and end time for each shift)
+1. I would have implemented a middleware that checks the current time, and checks the Nurses on duty
+and send a push notifications for pending task, especially task left from last shift (hence in the DB i added start time and end time for each shift)
 2. i would have added reminders for tasks depending on severity level
 
 This is an exciting one, 

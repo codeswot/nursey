@@ -7,4 +7,5 @@ class AppColors {
   static const secondaryAccent = Color(0xffADDDD0);
   static const primaryText = Color(0xff251B37);
   static const secondaryText = Color(0xff182747);
+  static const secondaryText2 = Color(0xff7a7f95);
 }

@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:nursey/app/models/residence/residence.dart';
 import 'package:nursey/app/models/shift/shift.dart';
 import 'package:nursey/app/services/shift_service.dart';
 import 'package:nursey/app/utils/design/colors.dart';
+import 'package:nursey/configs/packages.dart';
 
 import '../../models/task/enums.dart';
 import '../../services/residence_service.dart';
 
 class AppFormField extends StatelessWidget {
-  const AppFormField({required this.controller, this.hint, Key? key})
+  const AppFormField(
+      {required this.controller,
+      this.hint,
+      this.isPassword = false,
+      this.obscure = true,
+      this.onVisibilityChanged,
+      Key? key})
       : super(key: key);
   final TextEditingController controller;
   final String? hint;
+  final bool isPassword, obscure;
+  final VoidCallback? onVisibilityChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,6 +31,7 @@ class AppFormField extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
+        obscureText: isPassword ? obscure : false,
         style: GoogleFonts.nunito(
           color: AppColors.primaryText,
           fontWeight: FontWeight.bold,
@@ -31,8 +40,17 @@ class AppFormField extends StatelessWidget {
           border: InputBorder.none,
           hintText: hint,
           hintStyle: GoogleFonts.nunito(
-            color: AppColors.secondaryText,
+            color: AppColors.secondaryText2,
           ),
+          suffixIcon: isPassword
+              ? InkWell(
+                  onTap: onVisibilityChanged,
+                  child: Icon(
+                    obscure ? Icons.visibility : Icons.visibility_off,
+                    color: AppColors.primaryAccent,
+                  ),
+                )
+              : null,
         ),
       ),
     );
