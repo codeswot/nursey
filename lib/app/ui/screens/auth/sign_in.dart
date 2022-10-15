@@ -17,7 +17,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool obscurePassword = true;
-  bool isBusy = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +28,10 @@ class _SignInScreenState extends State<SignInScreen> {
             context.pushReplacement(HomeScreen.route());
             break;
           case AuthStatus.error:
-            setState(() {
-              isBusy = false;
-            });
             context.showErrorToast(
                 title: 'Sign In Error', message: state.exception ?? '');
             break;
           case AuthStatus.loading:
-            setState(() {
-              isBusy = true;
-            });
             break;
           default:
             break;
@@ -54,56 +47,20 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: [
                     const AppIllustration(AppIllustrations.nurse01Gif),
                     const SizedBox(height: 35),
-                    Text(
-                      'WELCOME BACK,\n to  Nursey!',
-                      style: GoogleFonts.nunito(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryAccent,
+                    Spring.fadeIn(
+                      child: Text(
+                        'WELCOME BACK,\n to  Nursey!',
+                        style: GoogleFonts.nunito(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryAccent,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 35),
-                    AppFormField(
-                      controller: emailController,
-                      hint: 'Email',
-                    ),
-                    const SizedBox(height: 30),
-                    AppFormField(
-                      controller: passwordController,
-                      hint: 'Password',
-                      isPassword: true,
-                      obscure: obscurePassword,
-                      onVisibilityChanged: () {
-                        setState(() {
-                          obscurePassword = !obscurePassword;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 70),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppSecondaryButton(
-                          width: 100,
-                          isBusy: isBusy,
-                          title: 'Mock',
-                          onPressed: () => context.read<AuthBloc>().add(
-                              const AuthSignIn(
-                                  email: 'aliya.mahim@nursey.com',
-                                  password: '123456789')),
-                        ),
-                        AppPrimaryButton(
-                          width: 250,
-                          title: 'Sign In',
-                          onPressed: () => context.read<AuthBloc>().add(
-                                AuthSignIn(
-                                    email: emailController.text,
-                                    password: passwordController.text),
-                              ),
-                        ),
-                      ],
-                    ),
+                    AppSignInFormFields(
+                        passwordController: passwordController,
+                        emailController: emailController),
                   ],
                 ),
               ),
@@ -112,5 +69,72 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
     );
+  }
+}
+
+class AppSignInFormFields extends StatefulWidget {
+  const AppSignInFormFields(
+      {required this.passwordController,
+      required this.emailController,
+      Key? key})
+      : super(key: key);
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+
+  @override
+  State<AppSignInFormFields> createState() => _AppSignInFormFieldsState();
+}
+
+class _AppSignInFormFieldsState extends State<AppSignInFormFields> {
+  bool obscurePassword = true;
+  bool isBusy = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        child: Spring.slide(
+      child: Column(children: [
+        const SizedBox(height: 35),
+        AppFormField(
+          controller: widget.emailController,
+          hint: 'Email',
+        ),
+        const SizedBox(height: 30),
+        AppFormField(
+          controller: widget.passwordController,
+          hint: 'Password',
+          isPassword: true,
+          obscure: obscurePassword,
+          onVisibilityChanged: () {
+            setState(() {
+              obscurePassword = !obscurePassword;
+            });
+          },
+        ),
+        const SizedBox(height: 70),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AppSecondaryButton(
+              width: 100,
+              isBusy: isBusy,
+              title: 'Mock',
+              onPressed: () => context.read<AuthBloc>().add(const AuthSignIn(
+                  email: 'aliya.mahim@nursey.com', password: '123456789')),
+            ),
+            AppPrimaryButton(
+              width: 250,
+              title: 'Sign In',
+              onPressed: () => context.read<AuthBloc>().add(
+                    AuthSignIn(
+                        email: widget.emailController.text,
+                        password: widget.passwordController.text),
+                  ),
+            ),
+          ],
+        ),
+      ]),
+      slideType: SlideType.slide_in_bottom,
+    ));
   }
 }
