@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nursey/app/bloc/task/task_bloc.dart';
-import 'package:nursey/app/models/residence/residence.dart';
-import 'package:nursey/app/models/shift/shift.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nursey/app/models/task/enums.dart';
-import 'package:nursey/app/models/task/task.dart';
-import 'package:nursey/app/ui/widgets/app_form_field.dart';
-import 'package:nursey/app/utils/extensions/extensions.dart';
-import 'package:nursey/configs/configs.dart';
+import 'package:nursey/app/utils/design/design.dart';
+
+import '../../widgets/widgets.dart';
 
 class CreateTask extends StatefulWidget {
   static Route route() => MaterialPageRoute(
@@ -21,80 +18,73 @@ class CreateTask extends StatefulWidget {
 class _CreateTaskState extends State<CreateTask> {
   final TextEditingController _taskController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
-  Task? newTask;
-
-  Shift? shift;
-  Residence? residence;
-
-  TaskSeverity? severity;
+  TaskStatus? _status;
+  TaskSeverity? _severity;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create a Task'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              newTask = Task(
-                task: _taskController.text,
-                shift: shift?.id ?? '',
-                residence: residence?.id ?? '',
-                note: _noteController.text,
-              );
-
-              context
-                  .read<TaskBloc>()
-                  .add(AddTask(task: newTask ?? Task.empty));
-              context.pop();
-            },
-            icon: const Icon(Icons.save),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+      appBar: const CustomAppBar(title: 'Create Task'),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppFormField(
-                controller: _taskController,
-                hint: 'Task',
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppFormField(controller: _taskController, label: 'Task'),
+                  const SizedBox(height: 16),
+                  AppFormField(controller: _noteController, label: 'Note'),
+                  const SizedBox(height: 16),
+                  const Divider(color: AppColors.secondaryAccent, thickness: 1),
+                  const SizedBox(height: 16),
+                  StatusPicker(
+                    value: _status ?? TaskStatus.pending,
+                    onChanged: (newStatus) {
+                      setState(() {
+                        _status = newStatus;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  SeverityPicker(
+                    value: _severity ?? TaskSeverity.mild,
+                    onChanged: (newSeverity) {
+                      setState(() {
+                        _severity = newSeverity;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  const Divider(color: AppColors.secondaryAccent, thickness: 1),
+                  const SizedBox(height: 16),
+                  Text('Assign To , Shift',
+                      style: GoogleFonts.nunito(fontSize: 16)),
+                  const SizedBox(height: 6),
+                  ShiftDropDown(
+                    value: '',
+                    onChanged: (newShift) {
+                      // setState(() {
+                      //   widget.task.shift = newShift;
+                      // }
+                      // );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Text('Assign To , Residence',
+                      style: GoogleFonts.nunito(fontSize: 16)),
+                  ResidenceDropDownPicker(
+                      value: '', onChanged: (newResidence) {}),
+                ],
               ),
-              const SizedBox(height: 15),
-              AppFormField(
-                controller: _noteController,
-                hint: 'Note',
-              ),
-              const SizedBox(height: 15),
-              const SizedBox(height: 15),
-              ShiftDropDown(
-                value: shift?.name,
-                onChanged: (val) {
-                  setState(() {
-                    shift = val;
-                  });
-                  newTask?.copyWith(shift: shift?.id);
-                },
-              ),
-              const SizedBox(height: 15),
-              ResidenceDropDownPicker(
-                value: residence?.name,
-                onChanged: (val) {
-                  setState(() {
-                    residence = val;
-                  });
-                  newTask?.copyWith(residence: residence?.id);
-                },
-              ),
-              const SizedBox(height: 15),
-              SeverityPicker(
-                onChanged: (val) {
-                  setState(() {
-                    severity = val;
-                  });
-                  newTask?.copyWith(severity: severity);
-                },
-                value: severity!,
+              const SizedBox(height: 100),
+              SafeArea(
+                child: AppPrimaryButton(
+                  width: ScreenUtil.screenWidth,
+                  title: 'Save',
+                  onPressed: () {},
+                ),
               ),
             ],
           ),

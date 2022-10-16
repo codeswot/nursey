@@ -99,7 +99,7 @@ class ShiftDropDown extends StatelessWidget {
                       (e) => DropdownMenuItem(
                         value: e,
                         child: Text(
-                          e.name ?? '',
+                          '${e.name} Shift' ?? '',
                           style: GoogleFonts.nunito(
                             color: AppColors.primaryText,
                             fontWeight: FontWeight.bold,

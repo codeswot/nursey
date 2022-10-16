@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
 import 'package:nursey/app/utils/design/design.dart';
@@ -60,6 +61,27 @@ class _EditTaskState extends State<EditTask> {
                       });
                     },
                   ),
+                  const SizedBox(height: 16),
+                  const Divider(color: AppColors.secondaryAccent, thickness: 1),
+                  const SizedBox(height: 16),
+                  Text('Assign To , Shift',
+                      style: GoogleFonts.nunito(fontSize: 16)),
+                  const SizedBox(height: 6),
+                  ShiftDropDown(
+                    value: widget.task.shift,
+                    onChanged: (newShift) {
+                      // setState(() {
+                      //   widget.task.shift = newShift;
+                      // }
+                      // );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Text('Assign To , Residence',
+                      style: GoogleFonts.nunito(fontSize: 16)),
+                  ResidenceDropDownPicker(
+                      value: widget.task.residence,
+                      onChanged: (newResidence) {}),
                 ],
               ),
               const SizedBox(height: 100),
