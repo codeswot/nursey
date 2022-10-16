@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nursey/app/bloc/bloc.dart';
 import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
+import 'package:nursey/app/services/task_service.dart';
 import 'package:nursey/app/ui/screens/home.dart';
 import 'package:nursey/app/utils/design/design.dart';
 import 'package:nursey/app/utils/extensions/extensions.dart';
@@ -95,7 +96,11 @@ class _EditTaskState extends State<EditTask> {
                   children: [
                     AppSecondaryButton(
                       title: 'Delete',
-                      onPressed: () {},
+                      onPressed: () {
+                        //TODO, SHOW DIALOG TO CONFIRM DELETION
+                        TaskService().deleteTask(widget.task);
+                        context.pushAndRemoveUntil(HomeScreen.route());
+                      },
                       color: AppColors.primaryError,
                     ),
                     AppPrimaryButton(
