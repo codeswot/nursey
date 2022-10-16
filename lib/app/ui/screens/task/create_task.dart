@@ -94,7 +94,7 @@ class _CreateTaskState extends State<CreateTask> {
                   });
                   newTask?.copyWith(severity: severity);
                 },
-                value: severity,
+                value: severity!,
               ),
             ],
           ),

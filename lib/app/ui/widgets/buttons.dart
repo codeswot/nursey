@@ -57,6 +57,7 @@ class AppSecondaryButton extends StatelessWidget {
       this.width,
       this.height,
       this.isBusy = false,
+      this.color,
       Key? key})
       : super(key: key);
   final String title;
@@ -64,13 +65,16 @@ class AppSecondaryButton extends StatelessWidget {
   final double? height;
   final double? width;
   final bool isBusy;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       onPressed: isBusy ? null : onPressed,
       style: OutlinedButton.styleFrom(
-        backgroundColor: AppColors.primaryAccent.withOpacity(0.1),
-        foregroundColor: AppColors.primaryAccent,
+        backgroundColor: color != null
+            ? color!.withOpacity(0.1)
+            : AppColors.primaryAccent.withOpacity(0.1),
+        foregroundColor: color ?? AppColors.primaryAccent,
         disabledBackgroundColor: AppColors.primaryAccent.withOpacity(0.3),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),

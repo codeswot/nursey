@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
+import 'package:nursey/app/ui/screens/task/edit_task.dart';
 import 'package:nursey/app/ui/screens/task/task_detail.dart';
 import 'package:nursey/app/utils/extensions/extensions.dart';
 import 'package:nursey/configs/packages.dart';
@@ -118,6 +119,7 @@ class TaskTile extends StatelessWidget {
                       case 0:
                         break;
                       case 1:
+                        context.push(EditTask.route(task));
                         break;
                       case 2:
                         break;
