@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
-import 'package:nursey/app/utils/design/colors.dart';
 import 'package:nursey/app/utils/design/design.dart';
 
 import '../../widgets/widgets.dart';
@@ -19,6 +19,8 @@ class EditTask extends StatefulWidget {
 class _EditTaskState extends State<EditTask> {
   final TextEditingController _taskController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
+  TaskStatus? _status;
+  TaskSeverity? _severity;
   @override
   Widget build(BuildContext context) {
     _taskController.text = widget.task.task;
@@ -42,13 +44,21 @@ class _EditTaskState extends State<EditTask> {
                   const Divider(color: AppColors.secondaryAccent, thickness: 1),
                   const SizedBox(height: 16),
                   StatusPicker(
-                    value: widget.task.status,
-                    onChanged: (newStatus) {},
+                    value: _status ?? widget.task.status,
+                    onChanged: (newStatus) {
+                      setState(() {
+                        _status = newStatus;
+                      });
+                    },
                   ),
                   const SizedBox(height: 16),
                   SeverityPicker(
-                    value: widget.task.severity,
-                    onChanged: (newSeverity) {},
+                    value: _severity ?? widget.task.severity,
+                    onChanged: (newSeverity) {
+                      setState(() {
+                        _severity = newSeverity;
+                      });
+                    },
                   ),
                 ],
               ),
