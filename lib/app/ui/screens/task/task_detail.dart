@@ -142,7 +142,7 @@ class _TaskDetailState extends State<TaskDetail> {
                   ),
                   const SizedBox(width: 16),
                   AppPrimaryButton(
-                    width: 290,
+                    width: 250,
                     title: widget.task.status.isCompleted
                         ? 'Done'
                         : 'Mark As Done',
