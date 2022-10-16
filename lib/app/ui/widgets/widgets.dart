@@ -5,3 +5,4 @@ export 'bg_pattern.dart';
 export 'buttons.dart';
 export 'dialogs.dart';
 export 'illustration.dart';
+export 'task_tile.dart';
