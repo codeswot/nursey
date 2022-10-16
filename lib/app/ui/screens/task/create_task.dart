@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:nursey/app/bloc/bloc.dart';
 import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/utils/design/design.dart';
+import 'package:nursey/app/utils/extensions/extensions.dart';
+import 'package:nursey/configs/packages.dart';
 
+import '../../../models/task/task.dart';
 import '../../widgets/widgets.dart';
 
 class CreateTask extends StatefulWidget {
@@ -20,6 +23,8 @@ class _CreateTaskState extends State<CreateTask> {
   final TextEditingController _noteController = TextEditingController();
   TaskStatus? _status;
   TaskSeverity? _severity;
+  late String _residence;
+  late String _shift;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,17 +70,18 @@ class _CreateTaskState extends State<CreateTask> {
                   ShiftDropDown(
                     value: '',
                     onChanged: (newShift) {
-                      // setState(() {
-                      //   widget.task.shift = newShift;
-                      // }
-                      // );
+                      _shift = newShift?.id ?? '';
                     },
                   ),
                   const SizedBox(height: 16),
                   Text('Assign To , Residence',
                       style: GoogleFonts.nunito(fontSize: 16)),
                   ResidenceDropDownPicker(
-                      value: '', onChanged: (newResidence) {}),
+                    value: '',
+                    onChanged: (newResidence) {
+                      _residence = newResidence?.id ?? '';
+                    },
+                  ),
                 ],
               ),
               const SizedBox(height: 100),
@@ -83,7 +89,20 @@ class _CreateTaskState extends State<CreateTask> {
                 child: AppPrimaryButton(
                   width: ScreenUtil.screenWidth,
                   title: 'Save',
-                  onPressed: () {},
+                  onPressed: () {
+                    //TODO: use form validator to validate the form
+                    //TODO: Refactor, code clean up
+                    final newTask = Task(
+                      task: _taskController.text,
+                      note: _noteController.text,
+                      status: _status ?? TaskStatus.pending,
+                      severity: _severity ?? TaskSeverity.mild,
+                      shift: _shift,
+                      residence: _residence,
+                    );
+                    context.read<TaskBloc>().add(SetTask(task: newTask));
+                    context.pop();
+                  },
                 ),
               ),
             ],

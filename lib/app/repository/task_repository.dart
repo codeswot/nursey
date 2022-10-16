@@ -8,5 +8,5 @@ class TaskRepository {
   Stream<List<Task>>? getTasksFromShift$(String shiftId) =>
       _service.getTasksFromShift$(shiftId);
 
-  void addTask(Task newTask) => _service.addNewTask(newTask);
+  void setTask(Task newTask) => _service.setTask(newTask);
 }

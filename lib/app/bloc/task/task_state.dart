@@ -1,27 +1,27 @@
 part of 'task_bloc.dart';
 
-enum TaskStatus { initial, success, error, loading }
+enum TaskBlocStatus { initial, success, error, loading }
 
-extension TaskStatusX on TaskStatus {
-  bool get isInitial => this == TaskStatus.initial;
-  bool get isLoading => this == TaskStatus.loading;
-  bool get isSuccess => this == TaskStatus.success;
-  bool get isError => this == TaskStatus.error;
+extension TaskStatusX on TaskBlocStatus {
+  bool get isInitial => this == TaskBlocStatus.initial;
+  bool get isLoading => this == TaskBlocStatus.loading;
+  bool get isSuccess => this == TaskBlocStatus.success;
+  bool get isError => this == TaskBlocStatus.error;
 }
 
 class TaskState extends Equatable {
   const TaskState({
-    this.status = TaskStatus.initial,
+    this.status = TaskBlocStatus.initial,
     this.tasks,
     this.exception,
   });
-  final TaskStatus status;
+  final TaskBlocStatus status;
   final Stream<List<Task>?>? tasks;
   final String? exception;
 
   TaskState copyWith({
     Stream<List<Task>?>? tasks,
-    TaskStatus? status,
+    TaskBlocStatus? status,
     String? exception,
   }) {
     return TaskState(

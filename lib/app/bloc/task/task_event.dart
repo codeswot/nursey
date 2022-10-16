@@ -14,8 +14,8 @@ class GetTasks extends TaskEvent {
   List<Object> get props => [shiftId];
 }
 
-class AddTask extends TaskEvent {
-  const AddTask({required this.task});
+class SetTask extends TaskEvent {
+  const SetTask({required this.task});
 
   final Task task;
   @override

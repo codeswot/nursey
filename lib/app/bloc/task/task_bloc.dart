@@ -11,25 +11,27 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final TaskRepository _repository;
   TaskBloc(this._repository) : super(const TaskState()) {
     on<GetTasks>(_onGetTasks);
-    on<AddTask>(_onAddTask);
+    on<SetTask>(_onAddTask);
   }
   void _onGetTasks(GetTasks events, Emitter<TaskState> emit) {
     try {
-      emit(state.copyWith(status: TaskStatus.loading));
+      emit(state.copyWith(status: TaskBlocStatus.loading));
       final taskStream = _repository.getTasksFromShift$(events.shiftId);
-      emit(state.copyWith(tasks: taskStream, status: TaskStatus.success));
+      emit(state.copyWith(tasks: taskStream, status: TaskBlocStatus.success));
     } catch (e) {
-      emit(state.copyWith(exception: e.toString(), status: TaskStatus.error));
+      emit(state.copyWith(
+          exception: e.toString(), status: TaskBlocStatus.error));
     }
   }
 
-  void _onAddTask(AddTask events, Emitter<TaskState> emit) {
+  void _onAddTask(SetTask events, Emitter<TaskState> emit) {
     try {
-      emit(state.copyWith(status: TaskStatus.loading));
-      _repository.addTask(events.task);
-      emit(state.copyWith(status: TaskStatus.success));
+      emit(state.copyWith(status: TaskBlocStatus.loading));
+      _repository.setTask(events.task);
+      emit(state.copyWith(status: TaskBlocStatus.success));
     } catch (e) {
-      emit(state.copyWith(exception: e.toString(), status: TaskStatus.error));
+      emit(state.copyWith(
+          exception: e.toString(), status: TaskBlocStatus.error));
     }
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:nursey/app/bloc/bloc.dart';
 import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
+import 'package:nursey/app/ui/screens/home.dart';
 import 'package:nursey/app/utils/design/design.dart';
+import 'package:nursey/app/utils/extensions/extensions.dart';
+import 'package:nursey/configs/packages.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -22,6 +25,8 @@ class _EditTaskState extends State<EditTask> {
   final TextEditingController _noteController = TextEditingController();
   TaskStatus? _status;
   TaskSeverity? _severity;
+  String? _residence;
+  String? _shift;
   @override
   Widget build(BuildContext context) {
     _taskController.text = widget.task.task;
@@ -68,20 +73,19 @@ class _EditTaskState extends State<EditTask> {
                       style: GoogleFonts.nunito(fontSize: 16)),
                   const SizedBox(height: 6),
                   ShiftDropDown(
-                    value: widget.task.shift,
+                    value: _shift ?? widget.task.shift,
                     onChanged: (newShift) {
-                      // setState(() {
-                      //   widget.task.shift = newShift;
-                      // }
-                      // );
+                      _shift = newShift?.id;
                     },
                   ),
                   const SizedBox(height: 16),
                   Text('Assign To , Residence',
                       style: GoogleFonts.nunito(fontSize: 16)),
                   ResidenceDropDownPicker(
-                      value: widget.task.residence,
-                      onChanged: (newResidence) {}),
+                      value: _residence ?? widget.task.residence,
+                      onChanged: (newResidence) {
+                        _residence = newResidence?.id;
+                      }),
                 ],
               ),
               const SizedBox(height: 100),
@@ -97,7 +101,19 @@ class _EditTaskState extends State<EditTask> {
                     AppPrimaryButton(
                       width: ScreenUtil.screenWidth - 150,
                       title: 'Save',
-                      onPressed: () {},
+                      onPressed: () {
+                        final Task task = Task(
+                          id: widget.task.id,
+                          task: _taskController.text,
+                          note: _noteController.text,
+                          status: _status ?? widget.task.status,
+                          severity: _severity ?? widget.task.severity,
+                          shift: _shift ?? widget.task.shift,
+                          residence: _residence ?? widget.task.residence,
+                        );
+                        context.read<TaskBloc>().add(SetTask(task: task));
+                        context.pushAndRemoveUntil(HomeScreen.route());
+                      },
                     ),
                   ],
                 ),

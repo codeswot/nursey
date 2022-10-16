@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
+import 'package:nursey/app/services/task_service.dart';
 import 'package:nursey/app/ui/screens/task/edit_task.dart';
 import 'package:nursey/app/ui/screens/task/task_detail.dart';
 import 'package:nursey/app/utils/extensions/extensions.dart';
@@ -117,11 +118,15 @@ class TaskTile extends StatelessWidget {
                   onSelected: (int index) {
                     switch (index) {
                       case 0:
+                        //TODO Refactor to use bloc, and update state
+                        TaskService().markTaskAsDone(task);
                         break;
                       case 1:
                         context.push(EditTask.route(task));
                         break;
                       case 2:
+                        //TODO, SHOW DIALOG TO CONFIRM DELETION
+                        TaskService().deleteTask(task);
                         break;
                     }
                   },

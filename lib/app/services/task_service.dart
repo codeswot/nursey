@@ -1,3 +1,4 @@
+import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
 import 'package:nursey/configs/configs.dart';
 
@@ -19,12 +20,33 @@ class TaskService {
     }
   }
 
-  void addNewTask(Task newTask) {
+  void setTask(Task newTask) {
     try {
       _dbInstance
           .collection(_tasksCollection)
           .doc(newTask.id)
           .set(newTask.toJson(), SetOptions(merge: true));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void markTaskAsDone(Task task) {
+    try {
+      final newTask = task.copyWith(status: TaskStatus.completed);
+      _dbInstance
+          .collection(_tasksCollection)
+          .doc(newTask.id)
+          .set(newTask.toJson(), SetOptions(merge: true));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //delete task
+  void deleteTask(Task task) {
+    try {
+      _dbInstance.collection(_tasksCollection).doc(task.id).delete();
     } catch (e) {
       rethrow;
     }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nursey/app/models/models.dart';
 import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
+import 'package:nursey/app/services/services.dart';
+import 'package:nursey/app/services/task_service.dart';
 import 'package:nursey/app/ui/widgets/app_bar.dart';
 import 'package:nursey/app/ui/widgets/buttons.dart';
 import 'package:nursey/app/utils/extensions/build_context_extension.dart';
@@ -9,12 +12,18 @@ import 'package:nursey/app/utils/extensions/build_context_extension.dart';
 import '../../../utils/design/design.dart';
 import 'edit_task.dart';
 
-class TaskDetail extends StatelessWidget {
+class TaskDetail extends StatefulWidget {
   static Route route(Task task) => MaterialPageRoute(
         builder: (_) => TaskDetail(task),
       );
   const TaskDetail(this.task, {Key? key}) : super(key: key);
   final Task task;
+
+  @override
+  State<TaskDetail> createState() => _TaskDetailState();
+}
+
+class _TaskDetailState extends State<TaskDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +39,7 @@ class TaskDetail extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    task.task,
+                    widget.task.task,
                     style: GoogleFonts.nunito(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -38,7 +47,7 @@ class TaskDetail extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    task.note ?? '',
+                    widget.task.note ?? '',
                     style: GoogleFonts.nunito(fontSize: 16),
                   ),
                   const SizedBox(height: 26),
@@ -59,7 +68,7 @@ class TaskDetail extends StatelessWidget {
                             Icons.pending_actions_outlined,
                             color: AppColors.primaryAccent,
                           ),
-                          Text('Pending',
+                          Text(widget.task.status.name,
                               style: GoogleFonts.nunito(fontSize: 16)),
                         ],
                       ),
@@ -70,13 +79,13 @@ class TaskDetail extends StatelessWidget {
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           Icon(
                             Icons.priority_high_rounded,
-                            color: (task.severity.isMild)
+                            color: (widget.task.severity.isMild)
                                 ? AppColors.primaryInfo
-                                : task.severity.isImportant
+                                : widget.task.severity.isImportant
                                     ? AppColors.primaryError
                                     : AppColors.primaryWarning,
                           ),
-                          Text(task.severity.name,
+                          Text(widget.task.severity.name,
                               style: GoogleFonts.nunito(fontSize: 16)),
                         ],
                       ),
@@ -89,8 +98,7 @@ class TaskDetail extends StatelessWidget {
                             Icons.timer_outlined,
                             color: AppColors.secondaryText,
                           ),
-                          Text('Morning',
-                              style: GoogleFonts.nunito(fontSize: 16)),
+                          ShiftWidget(widget.task.shift),
                         ],
                       ),
                     ],
@@ -120,11 +128,7 @@ class TaskDetail extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text('Mr Simon Carl',
                       style: GoogleFonts.nunito(fontSize: 16)),
-                  Text('Evening Shift',
-                      style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        color: AppColors.primaryError,
-                      )),
+                  ShiftWidget(widget.task.shift, isCompleting: true),
                 ],
               ),
             ),
@@ -134,13 +138,21 @@ class TaskDetail extends StatelessWidget {
                 children: [
                   AppSecondaryButton(
                     title: 'Edit',
-                    onPressed: () => context.push(EditTask.route(task)),
+                    onPressed: () => context.push(EditTask.route(widget.task)),
                   ),
                   const SizedBox(width: 16),
                   AppPrimaryButton(
                     width: 290,
-                    title: 'Mark As Done',
-                    onPressed: () {},
+                    title: widget.task.status.isCompleted
+                        ? 'Done'
+                        : 'Mark As Done',
+                    onPressed: widget.task.status.isCompleted
+                        ? null
+                        : () {
+                            //TODO Refactor to use bloc, and update state
+                            TaskService().markTaskAsDone(widget.task);
+                            context.pop();
+                          },
                   ),
                 ],
               ),
@@ -149,5 +161,29 @@ class TaskDetail extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ShiftWidget extends StatelessWidget {
+  const ShiftWidget(this.shiftId, {this.isCompleting = false, Key? key})
+      : super(key: key);
+  final String shiftId;
+  final bool isCompleting;
+  @override
+  Widget build(BuildContext context) {
+    return //TODO: Refactor to use Bloc, streams, etc.
+        FutureBuilder<Shift?>(
+            future: ShiftService().getShiftFromId(shiftId),
+            builder: (context, snapshot) {
+              return Text(
+                  isCompleting
+                      ? '${snapshot.data?.name} Shift'
+                      : snapshot.data?.name ?? '',
+                  style: GoogleFonts.nunito(
+                      fontSize: isCompleting ? 14 : 16,
+                      color: isCompleting
+                          ? AppColors.primaryError
+                          : AppColors.primaryText));
+            });
   }
 }
