@@ -38,8 +38,8 @@ class AppFormField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         obscureText: isPassword ? obscure : false,
-        minLines: maxLines,
-        maxLines: maxLines,
+        minLines: maxLines ?? 1,
+        maxLines: maxLines ?? 1,
         style: GoogleFonts.nunito(
           color: AppColors.primaryText,
           fontWeight: FontWeight.bold,
@@ -90,6 +90,7 @@ class ShiftDropDown extends StatelessWidget {
             child: DropdownButtonHideUnderline(
               child: DropdownButtonFormField<Shift>(
                 hint: const Text('Select Shift'),
+                value: data.firstWhereOrNull((element) => element.id == value),
                 style: GoogleFonts.nunito(
                   color: AppColors.primaryText,
                   fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ class ShiftDropDown extends StatelessWidget {
                       (e) => DropdownMenuItem(
                         value: e,
                         child: Text(
-                          '${e.name} Shift' ?? '',
+                          '${e.name} Shift',
                           style: GoogleFonts.nunito(
                             color: AppColors.primaryText,
                             fontWeight: FontWeight.bold,
@@ -136,6 +137,7 @@ class ResidenceDropDownPicker extends StatelessWidget {
             child: DropdownButtonHideUnderline(
               child: DropdownButtonFormField<Residence>(
                 hint: const Text('Select Residence'),
+                value: data.firstWhereOrNull((element) => element.id == value),
                 style: GoogleFonts.nunito(
                   color: AppColors.primaryText,
                   fontWeight: FontWeight.bold,
