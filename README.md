@@ -7,6 +7,8 @@ Flutter Assignment for Dexter-health
 1. I would have implemented a middleware that checks the current time, and checks the Nurses on duty
 and send a push notifications for pending task, especially task left from last shift (hence in the DB i added start time and end time for each shift)
 2. i would have added reminders for tasks depending on severity level
+3. Reconsider animation, i would have used tween animations instead of packages, and i would
+have arranged them is a cleaner way (i.e. in a separate file) with loading animations too
 
 This is an exciting one, 
 although with the short time, i was only able to do mostly engineering setups, like bloc, service and repository
