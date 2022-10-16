@@ -9,6 +9,8 @@ and send a push notifications for pending task, especially task left from last s
 2. i would have added reminders for tasks depending on severity level
 3. Reconsider animation, i would have used tween animations instead of packages, and i would
 have arranged them is a cleaner way (i.e. in a separate file) with loading animations too
+4. Seperate the UI from the business logic, i.e. the UI should be in the UI folder and the business logic in the business logic folder
+5. I would have had a firedtore index rules to filter out tasks that are not assigned to the current user, and or that are still pending
 
 This is an exciting one, 
 although with the short time, i was only able to do mostly engineering setups, like bloc, service and repository
