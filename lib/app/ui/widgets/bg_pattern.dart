@@ -10,8 +10,8 @@ class AppPattern extends StatelessWidget {
     return SvgPicture.asset(
       AppBgPatterns.bgPattern2,
       alignment: Alignment.center,
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      width: ScreenUtil.absoluteWidth,
+      height: ScreenUtil.absoluteHeight,
       color: AppColors.primaryAccent.withOpacity(0.1),
     );
   }

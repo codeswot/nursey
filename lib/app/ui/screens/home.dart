@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nursey/app/bloc/bloc.dart';
 import 'package:nursey/app/models/task/task.dart';
 import 'package:nursey/app/ui/screens/task/create_task.dart';
-import 'package:nursey/app/ui/widgets/app_bar.dart';
-import 'package:nursey/app/ui/widgets/app_bg.dart';
 import 'package:nursey/app/ui/widgets/widgets.dart';
 import 'package:nursey/app/utils/extensions/extensions.dart';
 import 'package:nursey/configs/configs.dart';
@@ -39,7 +37,7 @@ class HomeScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: const CustomAppBar(),
+          appBar: const CustomAppBar(isHome: true),
           body: const AppBg(child: TasksViewer()),
           floatingActionButton: FloatingActionButton(
             onPressed: () => context.push(CreateTask.route()),
@@ -73,12 +71,6 @@ class TasksViewer extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final listItem = tasks?[index];
                       return TaskTile(listItem!);
-
-                      ListTile(
-                        title: Text(listItem?.task ?? ''),
-                        subtitle: Text(listItem?.shift ?? ''),
-                        onTap: () {},
-                      );
                     });
               }
               //return an error screen if error

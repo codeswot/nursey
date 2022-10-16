@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nursey/app/models/task/enums.dart';
 import 'package:nursey/app/models/task/task.dart';
+import 'package:nursey/app/ui/screens/task/task_detail.dart';
+import 'package:nursey/app/utils/extensions/extensions.dart';
 import 'package:nursey/configs/packages.dart';
 
 import '../../utils/design/design.dart';
@@ -19,7 +21,7 @@ class TaskTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () => context.push(TaskDetail.route(task)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +131,7 @@ class TaskTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: (task.severity.isMild)
-                        ? AppColors.primaryBg
+                        ? AppColors.primaryInfo
                         : task.severity.isImportant
                             ? AppColors.primaryError
                             : AppColors.primaryWarning,

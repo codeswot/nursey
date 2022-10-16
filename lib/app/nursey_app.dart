@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nursey/app/ui/screens/auth/auth.dart';
 import 'package:nursey/app/utils/design/colors.dart';
+import 'package:nursey/app/utils/design/design.dart';
 import 'package:nursey/configs/configs.dart';
 
 import 'bloc/bloc.dart';
@@ -51,9 +52,66 @@ class NurseyApp extends StatelessWidget {
               primarySwatch: Colors.purple,
               appBarTheme: const AppBarTheme(
                   backgroundColor: AppColors.primaryAccent, elevation: 1)),
-          home: const SignInScreen(),
+          home: const AppInitialScreen(),
+          // WidgetBuilder(
+          //   builder: (context) {
+          //     ScreenUtil.setScreenRatio(MediaQuery.of(context));
+          //     return
+          //
+          //     // return BlocBuilder<AuthBloc, AuthState>(
+          //     //   builder: (context, state) {
+          //     //     if (state is AuthInitial) {
+          //     //       return const AuthScreen();
+          //     //     } else if (state is AuthLoading) {
+          //     //       return const Scaffold(
+          //     //         body: Center(
+          //     //           child: CircularProgressIndicator(),
+          //     //         ),
+          //     //       );
+          //     //     } else if (state is AuthSuccess) {
+          //     //       return const AuthScreen();
+          //     //     } else if (state is AuthFailure) {
+          //     //       return const AuthScreen();
+          //     //     } else {
+          //     //       return const AuthScreen();
+          //     //     }
+          //     //   },
+          //     // );
+          //   },
+          // ),
         ),
       ),
     );
+  }
+}
+
+class AppInitialScreen extends StatelessWidget {
+  const AppInitialScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    //TODO: check auth state and route to appropriate screen
+    // return BlocBuilder<AuthBloc, AuthState>(
+    //   builder: (context, state) {
+    //     if (state is AuthInitial) {
+    //       return const AuthScreen();
+    //     } else if (state is AuthLoading) {
+    //       return const Scaffold(
+    //         body: Center(
+    //           child: CircularProgressIndicator(),
+    //         ),
+    //       );
+    //     } else if (state is AuthSuccess) {
+    //       return const AuthScreen();
+    //     } else if (state is AuthFailure) {
+    //       return const AuthScreen();
+    //     } else {
+    //       return const AuthScreen();
+    //     }
+    //   },
+    // );
+    ScreenUtil.setScreenRatio(MediaQuery.of(context));
+
+    return const SignInScreen();
   }
 }
