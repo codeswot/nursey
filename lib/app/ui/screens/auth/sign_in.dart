@@ -59,8 +59,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                     AppSignInFormFields(
-                        passwordController: passwordController,
-                        emailController: emailController),
+                      passwordController: passwordController,
+                      emailController: emailController,
+                    ),
                   ],
                 ),
               ),
@@ -88,9 +89,19 @@ class AppSignInFormFields extends StatefulWidget {
 class _AppSignInFormFieldsState extends State<AppSignInFormFields> {
   bool obscurePassword = true;
   bool isBusy = false;
+  final SpringController springController = SpringController();
+
+  @override
+  void initState() {
+    springController.play();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    //INFO:for test purposes only
+    widget.emailController.text = 'musa.damu@gmail.com';
+    widget.passwordController.text = '123456789';
     return Form(
         child: Spring.slide(
       child: Column(children: [
